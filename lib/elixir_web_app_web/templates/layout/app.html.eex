@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Hello ElixirWebApp!</title>
+
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="container">
+        <header class="header">
+          <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-menu">
+              <div class="navbar-end">
+                <%= if @current_user do %>
+                  <%= link "My Account", to: user_path(@conn, :show, @current_user.id), class: "navbar-item" %>
+                  <%= link "Sign out", to: session_path(@conn, :delete, @current_user), class: "navbar-item", method: "delete" %>
+                <% else %>
+                  <%= link "Register", to: user_path(@conn, :new), class: "navbar-item" %>
+                  <%= link "Sign In", to: session_path(@conn, :new), class: "navbar-item" %>
+                <% end %>
+              </div>
+            </div>
+          </nav>
+          <span class="logo"></span>
+        </header>
+
+        <main role="main">
+          <div class="container">
+            <%= if get_flash(@conn, :info) do %>
+              <div class="notification is-info">
+                <%= get_flash(@conn, :info) %>
+                <button class="delete" onclick="shared.hideAlert()"></button>
+              </div>
+            <% end %>
+            <%= if get_flash(@conn, :error) do %>
+              <div class="notification is-danger" role="alert">
+                <%= get_flash(@conn, :error) %>
+                <button class="delete" onclick="shared.hideAlert()"></button>
+              </div>
+            <% end %>
+            <%= if get_flash(@conn, :success) do %>
+              <div class="notification is-success" role="alert">
+                <%= get_flash(@conn, :success) %>
+                <button class="delete" onclick="shared.hideAlert()"></button>
+              </div>
+            <% end %>
+            <%= if get_flash(@conn, :warn) do %>
+              <div class="notification is-warning" role="alert">
+                <%= get_flash(@conn, :warn) %>
+                <button class="delete" onclick="shared.hideAlert()"></button>
+              </div>
+            <% end %>
+
+            <%= render @view_module, @view_template, assigns %>
+          </div>
+        </main>
+
+      </div> <!-- /container -->
+    </section>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script>
+      var shared = require('js/shared.js');
+    </script>
+  </body>
+</html>
